@@ -68,6 +68,30 @@ public class StudentController {
         return "create_student";
     }
 
+    @PostMapping("/students/search")
+    public String searchStudent(
+            @RequestParam("keyword") String keyword,
+            Model model
+    ) {
+        int page = 1;
+        int size = 5;
+
+        Page<Student> students = studentService.search(keyword);
+        Iterable<Student> studentList = students.getContent();
+
+        model.addAttribute("students", studentService.search(keyword));
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", students.getTotalPages());
+        model.addAttribute("totalItems", students.getTotalElements());
+        model.addAttribute("students", studentList);
+        model.addAttribute("field", "id");
+        model.addAttribute("direction", "ASC");
+        model.addAttribute("reverseDirection", "DESC");
+
+        return "students";
+    }
+
     @GetMapping("/students/edit/{id}")
     public String editStudentForm(@PathVariable("id") Long id, Model model) {
         Student student = studentService.findById(id).orElseThrow(

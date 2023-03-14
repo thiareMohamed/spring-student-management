@@ -33,6 +33,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Page<Student> search(String keyword) {
+        Sort sorted = Sort.by("id").ascending();
+        Pageable pageable = PageRequest.of(0, 5, sorted);
+
+        return studentRepository.search(keyword, pageable);
+    }
+
+    @Override
     public Page<Student> findAll(int page, int size, String field, String direction) {
         Sort sorted = direction.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(field).ascending()
