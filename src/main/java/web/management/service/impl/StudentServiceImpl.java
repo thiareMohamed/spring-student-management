@@ -1,6 +1,9 @@
 package web.management.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import web.management.entity.Student;
 import web.management.repository.StudentRepository;
@@ -24,12 +27,19 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public void save(Student student) {
+        studentRepository.save(student);
     }
 
     @Override
-    public Student update(Student student, Long id) {
+    public Page<Student> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        return studentRepository.findAll(pageable);
+    }
+
+    @Override
+    public void update(Student student, Long id) {
         Student fetchedStudent = studentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Student not found")
         );
@@ -38,17 +48,15 @@ public class StudentServiceImpl implements StudentService {
         fetchedStudent.setLastName(student.getLastName());
         fetchedStudent.setEmail(student.getEmail());
 
-        return studentRepository.save(fetchedStudent);
+        studentRepository.save(fetchedStudent);
     }
 
     @Override
-    public boolean deleteById(Long id) {
+    public void deleteById(Long id) {
         try {
             studentRepository.deleteById(id);
 
-            return true;
         } catch (Exception e) {
-            return false;
         }
     }
 }

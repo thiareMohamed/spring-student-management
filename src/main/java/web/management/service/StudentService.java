@@ -1,5 +1,6 @@
 package web.management.service;
 
+import org.springframework.data.domain.Page;
 import web.management.entity.Student;
 
 import java.util.Optional;
@@ -7,7 +8,8 @@ import java.util.Optional;
 public interface StudentService {
     Optional<Student> findById(Long id);
     Iterable<Student> findAll();
-    Student save(Student student);
-    Student update(Student student, Long id);
-    boolean deleteById(Long id);
+    Page<Student> findAll(int page, int size);
+    void save(Student student);
+    void update(Student student, Long id);
+    void deleteById(Long id);
 }
