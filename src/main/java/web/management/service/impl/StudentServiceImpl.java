@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import web.management.entity.Student;
 import web.management.repository.StudentRepository;
@@ -32,8 +33,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<Student> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public Page<Student> findAll(int page, int size, String field, String direction) {
+        Sort sorted = direction.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(field).ascending()
+                : Sort.by(field).descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sorted);
 
         return studentRepository.findAll(pageable);
     }
@@ -53,10 +57,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteById(Long id) {
-        try {
-            studentRepository.deleteById(id);
-
-        } catch (Exception e) {
-        }
+        studentRepository.deleteById(id);
     }
 }
