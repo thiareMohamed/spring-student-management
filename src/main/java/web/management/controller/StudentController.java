@@ -1,7 +1,6 @@
 package web.management.controller;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +19,12 @@ public class StudentController {
 
     @GetMapping("/")
     public String index(Model model) {
-        return this.findPaginated(
-                1,
-                5,
-                "id",
-                String.valueOf(Sort.Direction.ASC),
-                model);
+        return "index";
+    }
+
+    @GetMapping("/legacy")
+    public String legacy(Model model) {
+        return findPaginated(1, 10, "id", "ASC", model);
     }
 
     @GetMapping("/students")
@@ -118,6 +117,7 @@ public class StudentController {
         model.addAttribute("students", studentList);
         model.addAttribute("field", "id");
         model.addAttribute("direction", "ASC");
+        model.addAttribute("pagination", new FilterPayload());
         model.addAttribute("reverseDirection", "DESC");
 
         return "students";
@@ -137,21 +137,21 @@ public class StudentController {
     public String deleteStudentForm(@PathVariable("id") Long id, Model model) {
         studentService.deleteById(id);
 
-        return "redirect:/students";
+        return findPaginated(1, 10, "id", "ASC", model);
     }
 
     @PostMapping("/students")
-    public String saveStudent(@ModelAttribute("student") Student student) {
+    public String saveStudent(@ModelAttribute("student") Student student, Model model) {
         studentService.save(student);
 
-        return "redirect:/students";
+        return findPaginated(1, 10, "id", "ASC", model);
     }
 
     @PostMapping("/students/{id}")
     public String updateStudent(
-            @PathVariable("id") Long id, @ModelAttribute("student") Student student) {
+            @PathVariable("id") Long id, @ModelAttribute("student") Student student, Model model) {
         studentService.update(student, id);
 
-        return "redirect:/students";
+        return findPaginated(1, 10, "id", "ASC", model);
     }
 }
