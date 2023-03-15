@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/students}">Home</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/management/about}">About us</a>
@@ -54,14 +54,14 @@
             <div class="card-body">
                 <form th:action="@{/students}" th:object="${student}" method="POST">
                     <div class="form-group mt-2">
-                        <label>First name</label>
-                        <input type="text" name="firstName" class="form-control mb-2 mt-2" th:field="*{firstName}"
+                        <label for="firstName">First name</label>
+                        <input id="firstName" type="text" name="firstName" class="form-control mb-2 mt-2" th:field="*{firstName}"
                                placeholder="First name">
-                        <label>Last name</label>
-                        <input type="text" name="lastName" class="form-control mb-2 mt-2" th:field="*{lastName}"
+                        <label for="lastName">Last name</label>
+                        <input id="lastName"  type="text" name="lastName" class="form-control mb-2 mt-2" th:field="*{lastName}"
                                placeholder="Last name">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control mb-2 mt-2" th:field="*{email}"
+                        <label for="email">Email</label>
+                        <input id="email"  type="email" name="email" class="form-control mb-2 mt-2" th:field="*{email}"
                                placeholder="Email">
                     </div>
 
