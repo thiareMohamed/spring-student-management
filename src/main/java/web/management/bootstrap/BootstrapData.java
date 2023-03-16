@@ -22,11 +22,11 @@ public class BootstrapData implements CommandLineRunner {
         for (int i = 0; i < 50; i++) {
             Student student = new Student();
 
-            student.setFirstName(faker.name().firstName());
-            student.setLastName(faker.name().lastName());
+            student.setFirstName(faker.leagueOfLegends().champion());
+            student.setLastName(faker.leagueOfLegends().rank());
             student.setEmail(faker.internet().emailAddress());
             student.setAge(faker.number().numberBetween(18, 30));
-            student.setPhotoUrl(faker.internet().image());
+            student.setPhotoUrl("https://avatars.dicebear.com/api/open-peeps/" + faker.name().firstName() + ".svg");
 
             studentRepository.save(student);
         }

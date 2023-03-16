@@ -51,6 +51,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Optional<Student> findByEmail(String email) {
+        return studentRepository.findByEmail(email);
+    }
+
+    @Override
     public void update(Student student, Long id) {
         Student fetchedStudent = studentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Student not found")

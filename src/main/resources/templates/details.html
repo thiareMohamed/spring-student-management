@@ -13,17 +13,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <style>
-        .form-control {
-            width: 110%;
-            font-size: 10pt;
-        }
-
-        .container-fluid {
-            padding: 0;
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -108,45 +97,72 @@
     </div>
 </nav>
 <div class="container mt-5 mb-5">
-    <div class="container mt-5 mb-5">
-        <div class="d-flex justify-content-between">
-            <div>
-                <h1>Students list</h1>
+    <div class="d-flex justify-content-between">
+        <div>
+            <h1>Student's information</h1>
+        </div>
+        <div>
+            <a
+                    th:href="@{/students/edit/{id}(id=${student.id})}"
+                    type="button"
+                    class="btn btn-success btn-sm mt-1"
+            >
+                Edit information
+            </a>
+            <a
+                    th:href="@{/students/delete/{id}(id=${student.id})}"
+                    type="button"
+                    class="btn btn-danger btn-sm mt-1"
+            >
+                Delete student
+            </a>
+        </div>
+    </div>
+    <form th:object="${student}">
+        <div class="row">
+            <div class="col-md-5">
+                <img
+                        th:src="${student.getPhotoUrl()}"
+                        id="student-img"
+                        class="img-thumbnail" alt="Cinque Terre" width="400" height="400">
             </div>
-            <div>
-                <a
-                        th:href="@{/students/new}"
-                        type="button"
-                        class="btn btn-primary btn-sm mt-1"
-                >
-                    Add student
-                </a>
+            <div class="col-md-6">
+                <div class="mb-3 row">
+                    <div class="col-9">
+                        <p class="text-muted fs-6">Full name</p>
+                        <p class="fs-6" id="full-name" th:field="*{firstName}">
+                            <span th:text="*{firstName}"></span>&nbsp;<span th:text="*{lastName}"></span>
+                        </p>
+                    </div>
+                    <div class="col-2">
+                        <p class="text-muted fs-6">Age</p>
+                        <p class="fs-6" id="age" th:field="*{age}">
+                            <span th:text="*{age}"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <p class="text-muted fs-6">Email</p>
+                    <p class="fs-6" id="email" th:field="*{email}">
+                        <span th:text="*{email}"></span>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <p class="text-muted fs-6">Lorem</p>
+                    <p class="fs-6" id="lorem">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, autem
+                        consequuntur cumque delectus doloremque dolorum eaque eius eligendi
+                        exercitationem explicabo fugiat hic id impedit ipsa ipsam iure laboriosam
+                        laborum magnam maxime minima molestiae natus nemo neque nobis nostrum
+                        obcaecati officia omnis pariatur perferendis perspiciatis placeat porro
+                        praesentium provident quae quaerat quas quia quibusdam quisquam quod
+                        recusandae repellat reprehenderit rerum saepe sapiente sequi sint sit
+                        soluta suscipit tempora temporibus tenetur totam unde ut velit veniam
+                    </p>
+                </div>
             </div>
         </div>
-        <hr/>
-        <table id="studentsTable" class="display table">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Age</th>
-                <th>Operations</th>
-            </tr>
-            </thead>
-            <tfoot>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Age</th>
-                <th>Operations</th>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
+    </form>
 </div>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -154,35 +170,16 @@
         crossorigin="anonymous"
 ></script>
 <script>
-    $.ajax({
-        url: "/api/v1/students",
-        serverSide: true,
-        processing: true,
-        dataType: 'json',
-        method: "GET",
-        contentType: 'application/json'
-    }).done((data) => {
-        $('#studentsTable').dataTable({
-            aaData: data,
-            columns: [
-                {"data": "id"},
-                {"data": "firstName"},
-                {"data": "lastName"},
-                {"data": "email"},
-                {"data": "age"},
-                {
-                    mRender: (data, type, row) => {
-                        console.table(row);
-                        const linkEdit = `<a class='btn btn-outline-primary' href='/students/edit/${row.id}'>Edit</a>`;
-                        const linkDetails = `<a class="btn btn-outline-secondary" href='/students/details/${row.id}'>Details</a>`;
-                        const linkDelete = `<a class='btn btn-outline-danger' href='/students/delete/${row.id}'>Delete</a>`;
+    $(document).ready(async () => {
+        const email = $('#email').val();
+        const response = await fetch(`/api/v1/students/${email}`);
+        const data = await response.json();
+        console.table(data);
+        const student = data.data;
+        console.table(student);
 
-                        return linkEdit + " " + linkDetails + " " + linkDelete;
-                    }
-                }
-            ]
-        })
-    })
+        $('#student-img').attr('src', student.photoUrl || 'https://www.w3schools.com/bootstrap4/img_avatar3.png');
+    });
 </script>
 </body>
 </html>

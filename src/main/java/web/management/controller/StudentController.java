@@ -27,6 +27,16 @@ public class StudentController {
         return findPaginated(1, 10, "id", "ASC", model);
     }
 
+    @GetMapping("/students/details/{id}")
+    public String details(@PathVariable("id") Long id, Model model) {
+        Student student = studentService.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Invalid student Id:" + id));
+
+        model.addAttribute("student", student);
+
+        return "details";
+    }
+
     @GetMapping("/students/{page}/{size}")
     public String findPaginated(
             @PathVariable int page,
