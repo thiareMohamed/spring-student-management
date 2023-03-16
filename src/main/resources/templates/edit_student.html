@@ -54,15 +54,18 @@
       <div class="card-body">
         <form th:action="@{/students/{id} (id=${student.getId()})}" th:object="${student}" method="POST">
           <div class="form-group mt-2">
-            <label>First name</label>
-            <input type="text" name="firstName" class="form-control mb-2 mt-2" th:field="*{firstName}"
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" class="form-control mb-2 mt-2" th:field="*{firstName}"
                    placeholder="First name">
-            <label>Last name</label>
-            <input type="text" name="lastName" class="form-control mb-2 mt-2" th:field="*{lastName}"
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" class="form-control mb-2 mt-2" th:field="*{lastName}"
                    placeholder="Last name">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control mb-2 mt-2" th:field="*{email}"
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control mb-2 mt-2" th:field="*{email}"
                    placeholder="Email">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" class="form-control mb-2 mt-2" th:field="*{age}"
+                   placeholder="Age">
           </div>
 
           <div class="box-footer">

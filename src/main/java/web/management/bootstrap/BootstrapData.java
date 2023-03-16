@@ -25,6 +25,8 @@ public class BootstrapData implements CommandLineRunner {
             student.setFirstName(faker.name().firstName());
             student.setLastName(faker.name().lastName());
             student.setEmail(faker.internet().emailAddress());
+            student.setAge(faker.number().numberBetween(18, 30));
+            student.setPhotoUrl(faker.internet().image());
 
             studentRepository.save(student);
         }

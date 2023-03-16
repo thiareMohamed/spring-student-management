@@ -22,4 +22,8 @@ public class Student {
     private String lastName;
     @Column(nullable = false, length = 50)
     private String email;
+    @Column(nullable = false)
+    private Integer age;
+    @Column(nullable = false)
+    private String photoUrl;
 }

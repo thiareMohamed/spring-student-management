@@ -18,20 +18,13 @@ public class StudentController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index() {
         return "index";
     }
 
     @GetMapping("/legacy")
     public String legacy(Model model) {
         return findPaginated(1, 10, "id", "ASC", model);
-    }
-
-    @GetMapping("/students")
-    public String findAll(Model model) {
-        model.addAttribute("students", studentService.findAll());
-
-        return "students";
     }
 
     @GetMapping("/students/{page}/{size}")
@@ -134,24 +127,25 @@ public class StudentController {
     }
 
     @GetMapping("/students/delete/{id}")
-    public String deleteStudentForm(@PathVariable("id") Long id, Model model) {
+    public String deleteStudentForm(@PathVariable("id") Long id) {
         studentService.deleteById(id);
 
-        return findPaginated(1, 10, "id", "ASC", model);
+        return "index";
     }
 
     @PostMapping("/students")
-    public String saveStudent(@ModelAttribute("student") Student student, Model model) {
+    public String saveStudent(@ModelAttribute("student") Student student) {
+        student.setPhotoUrl("https://www.w3schools.com/bootstrap4/img_avatar1.png");
         studentService.save(student);
 
-        return findPaginated(1, 10, "id", "ASC", model);
+        return "index";
     }
 
     @PostMapping("/students/{id}")
     public String updateStudent(
-            @PathVariable("id") Long id, @ModelAttribute("student") Student student, Model model) {
+            @PathVariable("id") Long id, @ModelAttribute("student") Student student) {
         studentService.update(student, id);
 
-        return findPaginated(1, 10, "id", "ASC", model);
+        return "index";
     }
 }

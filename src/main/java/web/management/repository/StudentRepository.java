@@ -15,6 +15,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             "OR LOWER(p.email) LIKE LOWER(CONCAT('%', :keyword, '%')) "
     )
     Page<Student> search(String keyword, Pageable pageable);
-
-    Page<Student> findAllByFirstNameContainingIgnoreCase(String keyword, Pageable pageable);
 }
