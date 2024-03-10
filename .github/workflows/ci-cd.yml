@@ -30,5 +30,6 @@ jobs:
       - name: Publish to Docker Hub
         run: |
           mvn -B spring-boot:build-image -Dspring-boot.build-image.publish=true \
-          -Ddocker.user=${{ secrets.DOCKER_USERNAME }} -Ddocker.token=${{ secrets.DOCKER_PASSWORD }} \
+          -Ddocker.user=${{ secrets.DOCKER_USERNAME }}/management-app \
+          -Ddocker.token=${{ secrets.DOCKER_PASSWORD }} \
           -DskipTests
